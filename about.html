@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="/favicon.ico" rel="shortcut icon">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no, width=device-width" name="viewport">
+    <title>关于我 - dblark's blog</title>
+
+
+    <link href="/css/base.min.css" rel="stylesheet">
+    <link href="/css/project.min.css" rel="stylesheet">
+    <link href="/css/styles.css" rel="stylesheet">
+    <link href="/css/gitment.css" rel="stylesheet">
+
+
+    <script type="text/x-mathjax-config">
+  		MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
+    <script src="https://cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script>
+    function getCookie(c_name)
+    {
+    if (document.cookie.length>0)
+      {
+      c_start=document.cookie.indexOf(c_name + "=")
+      if (c_start!=-1)
+        {
+        c_start=c_start + c_name.length+1
+        c_end=document.cookie.indexOf(";",c_start)
+        if (c_end==-1) c_end=document.cookie.length
+        return unescape(document.cookie.substring(c_start,c_end))
+        }
+      }
+    return ""
+    }
+
+    var cookie=getCookie("Language")
+    if (cookie=="")
+    {
+      cookie="pascal"
+    }
+    if (cookie=="pascal")
+    {
+      document.write("<style type=\"text/css\">.c\\+\\+{display:none;}</style>")
+    }
+    if (cookie=="c++")
+    {
+      document.write("<style type=\"text/css\">.pascal{display:none;}</style>")
+    }
+    </script>
+
+</head>
+<body class="page-brand">
+
+
+	 <nav class="menu menu-left nav-drawer nav-drawer-md" id="ui_menu">
+		 <div class="menu-scroll">
+			 <div class="menu-content">
+				 <a class="menu-logo" href="/">周圣杰的博客</a>
+				 <ul class="nav">
+					 <li>
+
+						 <a class="collapsed waves-attach waves-effect" data-toggle="collapse" href="#notes">学习笔记</a>
+						 <ul class="menu-collapse collapse in" id="notes">
+
+							 <li>
+								 <a class="waves-attach" href="/notes/FFT.html">FFT详解</a>
+							 </li>
+
+						 </ul>
+						 <a class="collapsed waves-attach waves-effect" data-toggle="collapse" href="#pascal">Pascal语法</a>
+						 <ul class="menu-collapse collapse in" id="pascal">
+
+							 <li>
+								 <a class="waves-attach" href="/pascal/operator.html">运算符重载</a>
+							 </li>
+
+					 </li>
+
+				 </ul>
+			 </div>
+		 </div>
+	 </nav>
+
+    <header class="header header-transparent header-waterfall ui-header">
+        <ul class="nav nav-list pull-left hidden-md hidden-lg">
+            <li>
+                <a data-toggle="menu" href="#ui_menu">
+                    <span class="icon icon-lg">menu</span>
+                </a>
+            </li>
+        </ul>
+        <span class="header-logo header-affix visible-md-block visible-lg-block margin-right-no" data-offset-top="0" data-spy="affix">
+            <p class="pagetitle">关于我</p>
+        </span>
+
+        <ul class="nav nav-list pull-right">
+            <li>
+                <a data-toggle="menu" href="/">
+                    <span class="avatar avatar-sm"><img alt="icon" src="/favicon.ico"></span>
+                </a>
+            </li>
+        </ul>
+    </header>
+    <main class="content">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 col-lg-offset-3 col-md-10 col-md-offset-1">
+                    <section class="content-inner margin-top-no">
+                        <br>
+
+<h1 id="关于我">关于我</h1>
+<p>一个<del>zj国</del>小学生，喜欢数学和编程。很喜欢Pascal。</p>
+<p>QQ：<code>2723569669</code></p>
+<p>Email：<a href="mailto:18958336781m@sina.com">18958336781m@sina.com</a></p>
+<p>GitHub：<a href="http://github.com/dblark" class="uri">http://github.com/dblark</a></p>
+<p>洛谷：<a href="http://luogu.org/space/show?uid=40241" class="uri">http://luogu.org/space/show?uid=40241</a></p>
+
+                    </section>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-6 col-lg-offset-3 col-md-10 col-md-offset-1">
+                    <section class="content-inner margin-top-no">
+                        <hr>
+
+                            <p>版权？ 不存在的。</p>
+                            <p><a style="float:left" href="/link.html">友链</a><a style="float:right" href="/about.html">关于我</a></p>
+                            <br>
+                            <p>选择语言：
+                            <p><a style="float:left" href="/setLanguage.html?pascal">Pascal</a><a style="float:right" href="/setLanguage.html?c++">C++</a></p>
+                    </section>
+                </div>
+            </div>
+
+            <div id="container"></div>
+            <script src="/js/gitment.js"></script>
+            <script>
+            var gitment = new Gitment({
+            owner: 'dblark',
+            repo: 'Issues',
+            oauth: {
+            client_id: '8fa4b6551a4d0d6a0d68',
+            client_secret: '829f1d6cc0a2247ae3f33a1744337464d26e65a4',
+            },
+            })
+            gitment.render('container')
+            </script>
+
+    </main>
+
+
+
+
+
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/base.min.js"></script>
+</body>
+</html>

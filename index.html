@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="/favicon.ico" rel="shortcut icon">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no, width=device-width" name="viewport">
+    <title>首页 - dblark's blog</title>
+
+
+    <link href="/css/base.min.css" rel="stylesheet">
+    <link href="/css/project.min.css" rel="stylesheet">
+    <link href="/css/styles.css" rel="stylesheet">
+    <link href="/css/gitment.css" rel="stylesheet">
+
+
+    <script type="text/x-mathjax-config">
+  		MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
+    <script src="https://cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script>
+    function getCookie(c_name)
+    {
+    if (document.cookie.length>0)
+      {
+      c_start=document.cookie.indexOf(c_name + "=")
+      if (c_start!=-1)
+        {
+        c_start=c_start + c_name.length+1
+        c_end=document.cookie.indexOf(";",c_start)
+        if (c_end==-1) c_end=document.cookie.length
+        return unescape(document.cookie.substring(c_start,c_end))
+        }
+      }
+    return ""
+    }
+
+    var cookie=getCookie("Language")
+    if (cookie=="")
+    {
+      cookie="pascal"
+    }
+    if (cookie=="pascal")
+    {
+      document.write("<style type=\"text/css\">.c\\+\\+{display:none;}</style>")
+    }
+    if (cookie=="c++")
+    {
+      document.write("<style type=\"text/css\">.pascal{display:none;}</style>")
+    }
+    </script>
+
+</head>
+<body class="page-brand">
+
+
+	 <nav class="menu menu-left nav-drawer nav-drawer-md" id="ui_menu">
+		 <div class="menu-scroll">
+			 <div class="menu-content">
+				 <a class="menu-logo" href="/">周圣杰的博客</a>
+				 <ul class="nav">
+					 <li>
+
+						 <a class="collapsed waves-attach waves-effect" data-toggle="collapse" href="#notes">学习笔记</a>
+						 <ul class="menu-collapse collapse in" id="notes">
+
+							 <li>
+								 <a class="waves-attach" href="/notes/FFT.html">FFT详解</a>
+							 </li>
+
+						 </ul>
+						 <a class="collapsed waves-attach waves-effect" data-toggle="collapse" href="#pascal">Pascal语法</a>
+						 <ul class="menu-collapse collapse in" id="pascal">
+
+							 <li>
+								 <a class="waves-attach" href="/pascal/operator.html">运算符重载</a>
+							 </li>
+
+					 </li>
+
+				 </ul>
+			 </div>
+		 </div>
+	 </nav>
+
+    <header class="header header-transparent header-waterfall ui-header">
+        <ul class="nav nav-list pull-left hidden-md hidden-lg">
+            <li>
+                <a data-toggle="menu" href="#ui_menu">
+                    <span class="icon icon-lg">menu</span>
+                </a>
+            </li>
+        </ul>
+        <span class="header-logo header-affix visible-md-block visible-lg-block margin-right-no" data-offset-top="0" data-spy="affix">
+            <p class="pagetitle">首页</p>
+        </span>
+
+        <ul class="nav nav-list pull-right">
+            <li>
+                <a data-toggle="menu" href="/">
+                    <span class="avatar avatar-sm"><img alt="icon" src="/favicon.ico"></span>
+                </a>
+            </li>
+        </ul>
+    </header>
+    <main class="content">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 col-lg-offset-3 col-md-10 col-md-offset-1">
+                    <section class="content-inner margin-top-no">
+                        <br>
+
+<h1 id="周圣杰的博客">周圣杰的博客</h1>
+<p>我是dblark，这里是我的博客。<strong>文章在左边。</strong></p>
+<p>主要写自己学习的算法，以及一些基本的东西。</p>
+<p>博客生成器真垃圾，有大神教我用PHP吗？</p>
+<p>没有第三方回复插件了，希望大佬送我一个手打的！</p>
+<p>%%%首页膜拜大佬。</p>
+<p>祝大家暑假快乐！</p>
+<p><del>反正我是有一个<strong>玄学</strong>的暑假</del></p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode pascal"><code class="sourceCode pascal"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">begin</span></a>
+<a class="sourceLine" id="cb1-2" data-line-number="2">writeln(<span class="st">&#39;Happy Summer Vacation!&#39;</span>);</a>
+<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="kw">end</span>.</a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode c++"><code class="sourceCode cpp"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="pp">#include</span><span class="im">&lt;iostream&gt;</span></a>
+<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="kw">using</span> <span class="kw">namespace</span> std;</a>
+<a class="sourceLine" id="cb2-3" data-line-number="3"><span class="dt">int</span> main()</a>
+<a class="sourceLine" id="cb2-4" data-line-number="4">{</a>
+<a class="sourceLine" id="cb2-5" data-line-number="5">  cout&lt;&lt;<span class="st">&quot;Happy Summer Vacation!&quot;</span>&lt;&lt;endl;</a>
+<a class="sourceLine" id="cb2-6" data-line-number="6">  <span class="cf">return</span> <span class="dv">0</span>;</a>
+<a class="sourceLine" id="cb2-7" data-line-number="7">}</a></code></pre></div>
+<p><a href="/ref/ref.html">征求翻译！</a></p>
+
+                    </section>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-6 col-lg-offset-3 col-md-10 col-md-offset-1">
+                    <section class="content-inner margin-top-no">
+                        <hr>
+
+                            <p>版权？ 不存在的。</p>
+                            <p><a style="float:left" href="/link.html">友链</a><a style="float:right" href="/about.html">关于我</a></p>
+                            <br>
+                            <p>选择语言：
+                            <p><a style="float:left" href="/setLanguage.html?pascal">Pascal</a><a style="float:right" href="/setLanguage.html?c++">C++</a></p>
+                    </section>
+                </div>
+            </div>
+
+            <div id="container"></div>
+            <script src="/js/gitment.js"></script>
+            <script>
+            var gitment = new Gitment({
+            owner: 'dblark',
+            repo: 'Issues',
+            oauth: {
+            client_id: '8fa4b6551a4d0d6a0d68',
+            client_secret: '829f1d6cc0a2247ae3f33a1744337464d26e65a4',
+            },
+            })
+            gitment.render('container')
+            </script>
+
+    </main>
+
+
+
+
+
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/base.min.js"></script>
+</body>
+</html>
