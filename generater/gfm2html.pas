@@ -112,7 +112,7 @@ ln+
 '            <script>'+ln+
 '            var gitment = new Gitment({'+ln+
 '            owner: ''dblark'','+ln+
-'            repo: ''Issues'','+ln+
+'            repo: ''zhoushengjie.pw'','+ln+
 '            oauth: {'+ln+
 '            client_id: ''8fa4b6551a4d0d6a0d68'','+ln+
 '            client_secret: ''829f1d6cc0a2247ae3f33a1744337464d26e65a4'','+ln+
