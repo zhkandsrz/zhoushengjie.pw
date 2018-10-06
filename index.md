@@ -4,19 +4,15 @@
 
 主要写自己学习的算法，以及一些基本的东西。
 
-博客生成器真垃圾，有大神教我用PHP吗？
-
-没有第三方回复插件了，希望大佬送我一个手打的！
+想学PHP写生成器，也想用JavaScript写回复插件。可惜我太蒻了。
 
 %%%首页膜拜大佬。
 
-祝大家暑假快乐！
-
-~~反正我是有一个**玄学**的暑假~~
+祝大家国庆假期快乐！
 
 ```pascal
 begin
-writeln('Happy Summer Vacation!');
+writeln('Happy Chinese National Day!');
 end.
 ```
 
@@ -25,9 +21,7 @@ end.
 using namespace std;
 int main()
 {
-  cout<<"Happy Summer Vacation!"<<endl;
+  cout<<"Happy Chinese National Day!"<<endl;
   return 0;
 }
 ```
-
-[征求翻译！](/ref/ref.html)

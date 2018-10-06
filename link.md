@@ -1,8 +1,12 @@
 # 友链
 
+排名不分先后。
+
 Twilight's blog:<http://backroad.top/>
 
 zwc's blog:<http://zwcsblog.xsazz.cn/>
+
+yemaster's blog:<http://blog.yemaster.xyz/>
 
 unsmart's blog:<http://unsmart.pw/>
 
