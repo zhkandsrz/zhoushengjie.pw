@@ -4,7 +4,7 @@
 
 Twilight's blog:<http://backroad.top/>
 
-zwc's blog:<http://zwcsblog.xsazz.cn/>
+zwc's blog:<http://zwcblog.top./>
 
 yemaster's blog:<http://blog.yemaster.xyz/>
 

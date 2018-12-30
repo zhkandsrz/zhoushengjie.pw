@@ -11,7 +11,7 @@
     <link href="/css/base.min.css" rel="stylesheet">
     <link href="/css/project.min.css" rel="stylesheet">
     <link href="/css/styles.css" rel="stylesheet">
-    <link href="/css/gitment.css" rel="stylesheet">
+    <link href="/css/gitalk.css" rel="stylesheet">
 
 
     <script type="text/x-mathjax-config">
@@ -113,13 +113,13 @@
                     <section class="content-inner margin-top-no">
                         <br>
 
-<h1 id="运算符重载">运算符重载</h1>
+<h1>运算符重载</h1>
 <p>运算符重载非常有用。有了它，代码能变的非常简洁。特别是针对高精度库之类的。</p>
 <p>Pascal的标准语法中是没有运算符重载的，不过，这个功能几乎在所有版本的编辑器里都有。</p>
 <p>我们来看看格式：</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode pascal"><code class="sourceCode pascal"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">operator</span> 运算符(参与运算的变量们)储存运算结果的变量;</a></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode pascal"><code class="sourceCode pascal"><a class="sourceLine" id="cb1-1" title="1"><span class="kw">operator</span> 运算符(参与运算的变量们)储存运算结果的变量;</a></code></pre></div>
 <p>举个例子：</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode pascal"><code class="sourceCode pascal"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw">operator</span> +(a,b:matrix)c:matrix;</a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode pascal"><code class="sourceCode pascal"><a class="sourceLine" id="cb2-1" title="1"><span class="kw">operator</span> +(a,b:matrix)c:matrix;</a></code></pre></div>
 <p>重载后，就可以像平常一样正常的使用加法了！</p>
 <p>但是，运算符重载有特殊的情况。在某些情况下，它们的功能有一些扩展。</p>
 <table>
@@ -171,18 +171,19 @@
                 </div>
             </div>
 
-            <div id="container"></div>
-            <script src="/js/gitment.js"></script>
+            <div id="gitalk-container"></div>
+            <script src="/js/gitalk.min.js"></script>
             <script>
-            var gitment = new Gitment({
-            owner: 'dblark',
-            repo: 'zhoushengjie.pw',
-            oauth: {
-            client_id: '8fa4b6551a4d0d6a0d68',
-            client_secret: '829f1d6cc0a2247ae3f33a1744337464d26e65a4',
-            },
+            var gitalk = new Gitalk({
+              clientID: '8fa4b6551a4d0d6a0d68',
+              clientSecret: '829f1d6cc0a2247ae3f33a1744337464d26e65a4',
+              repo: 'zhoushengjie.pw',
+              owner: 'dblark',
+              admin: ['dblark'],
+              id: location.pathname,
+              distractionFreeMode: false
             })
-            gitment.render('container')
+            gitalk.render('gitalk-container')
             </script>
 
     </main>

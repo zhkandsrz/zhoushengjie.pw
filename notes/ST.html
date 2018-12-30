@@ -11,7 +11,7 @@
     <link href="/css/base.min.css" rel="stylesheet">
     <link href="/css/project.min.css" rel="stylesheet">
     <link href="/css/styles.css" rel="stylesheet">
-    <link href="/css/gitment.css" rel="stylesheet">
+    <link href="/css/gitalk.css" rel="stylesheet">
 
 
     <script type="text/x-mathjax-config">
@@ -113,18 +113,17 @@
                     <section class="content-inner margin-top-no">
                         <br>
 
-<h1 id="浅析st表">浅析ST表</h1>
+<h1 id="st">浅析ST表</h1>
 <blockquote>
 <p>最近不知为何一直在写倍增……</p>
 </blockquote>
 <p>ST表是专门处理RMQ（静态查询区间最大值）问题的一种数据结构。</p>
 <p>它的速度非常快。可以做到$O(nlogn)$的时间建表，$O(1)$的时间查询。</p>
 <p>相对于线段树之类的，它查询的速度不知快了几倍。</p>
-<p>不过，它也有个缺陷：只能解决RMQ问题。<del>那好像ST表有点太垃圾了</del></p>
-<p>其实ST表在某些方面也是能应用的。<del>基于一些神奇的特性</del></p>
-<h2 id="倍增">倍增</h2>
+<p>不过，它也有个缺陷：只能解决RMQ问题。</p>
+<h2>倍增</h2>
 <p>先来讲讲倍增。</p>
-<p>看到倍增两个字，你想到了什么？$2^k$！</p>
+<p>看到倍增两个字，你想到了什么？$2^k$！（自然$k\in \mathbb{N}$）</p>
 <p>好。你猜对了。倍增就是跟$2$的次幂有关的。</p>
 <p>打个比方：</p>
 <p>有个人，开着一架飞机，在一些线性的飞机场从左往右飞。比如：</p>
@@ -137,71 +136,60 @@
 <p>那么，他一共记下了$9\times 9=81$个数据。飞机场少还好，如果多了，不仅他自己忙不过来，而且表也打不完……</p>
 <p>所以就产生了一个办法：我们只记录从某个机场出发飞$2^k$距离的终点机场。</p>
 <p>当然，这数据一下子小多了。用表的时候，只要先找到终点机场附近的一个机场（在起点机场的表上），继续沿着这个机场找下去，直到找到为止。</p>
-<p>比如：$air_2$到$air_9$。</p>
-<p>我们可以先从$air_2$找到$air_6$，然后再找到$air_8$，最后再找到$air_9$。</p>
-<p>这样预处理复杂度为$O(nlogn)$，查询复杂度为$O(logn)$，在预处理和查询的复杂度上找到了一个平衡（相对于预处理复杂度为$O(n^2)$和查询复杂度为$O(n)$的算法来说）。</p>
 <p>不过，这里就只是说明一下倍增的思想而已，也只是说明一下倍增的方便。</p>
-<p>另外备注一句：<strong>倍增一般是从大到小查询的</strong>，这在刚刚所举的例子中也有体现。</p>
-<p>很明显，从高位到低位查询肯定会方便很多。</p>
-<p>不过ST表的倍增查询比较特殊，是$O(1)$的，与这里介绍的略有不同，但核心思想是一样的。</p>
-<h2 id="st表">ST表</h2>
+<p>RMQ问题的倍增查询则是$O(1)$的，与这里介绍的不同。</p>
+<h2 id="st-1">ST表</h2>
 <p>懂了倍增，ST表也是挺简单的了。</p>
 <p>这里以静态求区间最大值为例。</p>
-<p>我们把区间分成许多块，每块的长度为$2^k$。区间开始的位置可以随便取。</p>
-<p>首先，我们建个表：这里用的是DP的思想。每一块最大值都是两个子块的最大值。</p>
+<p>首先，我们建个表：从每个位置开始跑一遍，每遍用的时间复杂度是$O(logn)$，总的复杂度就是$O(nlogn)$。</p>
+<p>自然，求的是这一块长度为$2^k$的区间的最大值。</p>
 <p>不过，为了快一点，最好要把$\lfloor log_2(n)\rfloor$全部预处理出来。</p>
 <p>下面给出建表的代码：</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode pascal"><code class="sourceCode pascal"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">procedure</span> build(n:<span class="dt">longint</span>);</a>
-<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw">begin</span></a>
-<a class="sourceLine" id="cb1-3" data-line-number="3">  log_<span class="dv">2</span>[<span class="dv">1</span>]:=<span class="dv">0</span>;</a>
-<a class="sourceLine" id="cb1-4" data-line-number="4">  <span class="kw">for</span> i:=<span class="dv">2</span> <span class="kw">to</span> n <span class="kw">do</span>             <span class="co">//预处理log2(n)</span></a>
-<a class="sourceLine" id="cb1-5" data-line-number="5">    log_<span class="dv">2</span>[i]:=log_<span class="dv">2</span>[i <span class="kw">div</span> <span class="dv">2</span>]+<span class="dv">1</span>;</a>
-<a class="sourceLine" id="cb1-6" data-line-number="6">  <span class="kw">for</span> i:=<span class="dv">1</span> <span class="kw">to</span> n <span class="kw">do</span>             <span class="co">//一个数的最大值就是它本身</span></a>
-<a class="sourceLine" id="cb1-7" data-line-number="7">    f[i,<span class="dv">0</span>]:=a[i];</a>
-<a class="sourceLine" id="cb1-8" data-line-number="8">  <span class="kw">for</span> j:=<span class="dv">1</span> <span class="kw">to</span> log_<span class="dv">2</span>[n] <span class="kw">do</span>      <span class="co">//枚举区间长度2^j</span></a>
-<a class="sourceLine" id="cb1-9" data-line-number="9">    <span class="kw">for</span> i:=<span class="dv">1</span> <span class="kw">to</span> n+<span class="dv">1-1</span> <span class="kw">shl</span> i <span class="kw">do</span> <span class="co">//枚举区间开始位置</span></a>
-<a class="sourceLine" id="cb1-10" data-line-number="10">      f[i,j]:=max(f[i,j<span class="dv">-1</span>],f[i+<span class="dv">1</span> <span class="kw">shl</span> (j<span class="dv">-1</span>),j<span class="dv">-1</span>]);</a>
-<a class="sourceLine" id="cb1-11" data-line-number="11"><span class="kw">end</span>;</a></code></pre></div>
-<div class="sourceCode" id="cb2"><pre class="sourceCode c++"><code class="sourceCode cpp"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="dt">void</span> build(<span class="dt">int</span> n);</a>
-<a class="sourceLine" id="cb2-2" data-line-number="2">{</a>
-<a class="sourceLine" id="cb2-3" data-line-number="3">    log_2[<span class="dv">1</span>]=<span class="dv">0</span>;</a>
-<a class="sourceLine" id="cb2-4" data-line-number="4">    <span class="cf">for</span> (<span class="dt">int</span> i=<span class="dv">2</span>;i&lt;=n;i++)     <span class="co">//预处理log2(n)</span></a>
-<a class="sourceLine" id="cb2-5" data-line-number="5">    {</a>
-<a class="sourceLine" id="cb2-6" data-line-number="6">        log_2[i]=log_2[i/<span class="dv">2</span>]<span class="dv">+1</span>;</a>
-<a class="sourceLine" id="cb2-7" data-line-number="7">    }</a>
-<a class="sourceLine" id="cb2-8" data-line-number="8">    <span class="cf">for</span> (<span class="dt">int</span> i=<span class="dv">1</span>;<span class="dv">1</span>&lt;=n;i++)     <span class="co">//一个数的最大值就是它本身</span></a>
-<a class="sourceLine" id="cb2-9" data-line-number="9">    {</a>
-<a class="sourceLine" id="cb2-10" data-line-number="10">        f[i,<span class="dv">0</span>]=a[i];</a>
-<a class="sourceLine" id="cb2-11" data-line-number="11">    }</a>
-<a class="sourceLine" id="cb2-12" data-line-number="12">    <span class="cf">for</span> (<span class="dt">int</span> j=<span class="dv">1</span>;j&lt;=log_2[n];j++)<span class="co">//枚举区间长度2^j</span></a>
-<a class="sourceLine" id="cb2-13" data-line-number="13">    {</a>
-<a class="sourceLine" id="cb2-14" data-line-number="14">        <span class="cf">for</span> (<span class="dt">int</span> i=<span class="dv">1</span>;i&lt;=n<span class="dv">+1</span>-(<span class="dv">1</span>&lt;&lt;j);i++)<span class="co">//枚举区间开始位置</span></a>
-<a class="sourceLine" id="cb2-15" data-line-number="15">        {</a>
-<a class="sourceLine" id="cb2-16" data-line-number="16">            f[i,j]=max(f[i,j<span class="dv">-1</span>],f[i+(<span class="dv">1</span>&lt;&lt;j<span class="dv">-1</span>),j<span class="dv">-1</span>]);</a>
-<a class="sourceLine" id="cb2-17" data-line-number="17">        }</a>
-<a class="sourceLine" id="cb2-18" data-line-number="18">    }</a>
-<a class="sourceLine" id="cb2-19" data-line-number="19">}</a></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode pascal"><code class="sourceCode pascal"><a class="sourceLine" id="cb1-1" title="1"><span class="kw">procedure</span> build(n:<span class="dt">longint</span>);</a>
+<a class="sourceLine" id="cb1-2" title="2"><span class="kw">begin</span></a>
+<a class="sourceLine" id="cb1-3" title="3">  log_<span class="dv">2</span>[<span class="dv">1</span>]:=<span class="dv">0</span>;</a>
+<a class="sourceLine" id="cb1-4" title="4">  <span class="kw">for</span> i:=<span class="dv">2</span> <span class="kw">to</span> n <span class="kw">do</span>             <span class="co">//预处理log2(n)</span></a>
+<a class="sourceLine" id="cb1-5" title="5">    log_<span class="dv">2</span>[i]:=log_<span class="dv">2</span>[i <span class="kw">div</span> <span class="dv">2</span>]+<span class="dv">1</span>;</a>
+<a class="sourceLine" id="cb1-6" title="6">  <span class="kw">for</span> i:=<span class="dv">1</span> <span class="kw">to</span> n <span class="kw">do</span>             <span class="co">//一个数的最大值就是它本身</span></a>
+<a class="sourceLine" id="cb1-7" title="7">    f[i,<span class="dv">0</span>]:=a[i];</a>
+<a class="sourceLine" id="cb1-8" title="8">  <span class="kw">for</span> j:=<span class="dv">1</span> <span class="kw">to</span> log_<span class="dv">2</span>[n] <span class="kw">do</span>      <span class="co">//枚举区间长度2^j</span></a>
+<a class="sourceLine" id="cb1-9" title="9">    <span class="kw">for</span> i:=<span class="dv">1</span> <span class="kw">to</span> n+<span class="dv">1-1</span> <span class="kw">shl</span> i <span class="kw">do</span> <span class="co">//枚举区间开始位置</span></a>
+<a class="sourceLine" id="cb1-10" title="10">      f[i,j]:=max(f[i,j<span class="dv">-1</span>],f[i+<span class="dv">1</span> <span class="kw">shl</span> (j<span class="dv">-1</span>),j<span class="dv">-1</span>]);</a>
+<a class="sourceLine" id="cb1-11" title="11"><span class="kw">end</span>;</a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode c++"><code class="sourceCode cpp"><a class="sourceLine" id="cb2-1" title="1"><span class="dt">void</span> build(<span class="dt">int</span> n);</a>
+<a class="sourceLine" id="cb2-2" title="2">{</a>
+<a class="sourceLine" id="cb2-3" title="3">    log_2[<span class="dv">1</span>]=<span class="dv">0</span>;</a>
+<a class="sourceLine" id="cb2-4" title="4">    <span class="cf">for</span> (<span class="dt">int</span> i=<span class="dv">2</span>;i&lt;=n;i++)     <span class="co">//预处理log2(n)</span></a>
+<a class="sourceLine" id="cb2-5" title="5">    {</a>
+<a class="sourceLine" id="cb2-6" title="6">        log_2[i]=log_2[i/<span class="dv">2</span>]+<span class="dv">1</span>;</a>
+<a class="sourceLine" id="cb2-7" title="7">    }</a>
+<a class="sourceLine" id="cb2-8" title="8">    <span class="cf">for</span> (<span class="dt">int</span> i=<span class="dv">1</span>;<span class="dv">1</span>&lt;=n;i++)     <span class="co">//一个数的最大值就是它本身</span></a>
+<a class="sourceLine" id="cb2-9" title="9">    {</a>
+<a class="sourceLine" id="cb2-10" title="10">        f[i,<span class="dv">0</span>]=a[i];</a>
+<a class="sourceLine" id="cb2-11" title="11">    }</a>
+<a class="sourceLine" id="cb2-12" title="12">    <span class="cf">for</span> (<span class="dt">int</span> j=<span class="dv">1</span>;j&lt;=log_2[n];j++)<span class="co">//枚举区间长度2^j</span></a>
+<a class="sourceLine" id="cb2-13" title="13">    {</a>
+<a class="sourceLine" id="cb2-14" title="14">        <span class="cf">for</span> (<span class="dt">int</span> i=<span class="dv">1</span>;i&lt;=n+<span class="dv">1</span>-(<span class="dv">1</span>&lt;&lt;j);i++)<span class="co">//枚举区间开始位置</span></a>
+<a class="sourceLine" id="cb2-15" title="15">        {</a>
+<a class="sourceLine" id="cb2-16" title="16">            f[i,j]=max(f[i,j-<span class="dv">1</span>],f[i+(<span class="dv">1</span>&lt;&lt;j-<span class="dv">1</span>),j-<span class="dv">1</span>]);</a>
+<a class="sourceLine" id="cb2-17" title="17">        }</a>
+<a class="sourceLine" id="cb2-18" title="18">    }</a>
+<a class="sourceLine" id="cb2-19" title="19">}</a></code></pre></div>
 <p>我们有了这些信息有什么用呢？怎么实现$O(1)$查询呢？</p>
 <p>举个例子：计算从$a_2$到$a_{10}$的最大值。一共有$9$个数。</p>
 <p>我们知道，$\lfloor log_2(9)\rfloor=3$。所以，我们只要查询从$a_2$开始的$2^3$个数的最大值和$a_{10}$往前的$2^3$个数的最大值再取最大值就行了。</p>
 <p><del>似乎有点绕</del></p>
-<p>我们知道，只用从开始的一个区间，是不可能完全覆盖整个区间的<del>很明显长度不可能总是$2^k$</del>。</p>
-<p>所以，要再用倒着向前的一个区间，两个区间互相覆盖<del>求最值并没有影响</del>，才能保证得出正确的答案。</p>
+<p>我们知道，只用从开始的一个区间，是不可能完全覆盖整个区间的。所以，要再倒着求一次，才能保证得出正确的答案。</p>
 <p>超级简洁的代码：</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode pascal"><code class="sourceCode pascal"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw">function</span> query(l,r:<span class="dt">longint</span>):<span class="dt">longint</span>;</a>
-<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="kw">begin</span></a>
-<a class="sourceLine" id="cb3-3" data-line-number="3">  <span class="kw">exit</span>(max(f[l,log_<span class="dv">2</span>[r-l+<span class="dv">1</span>]],f[r<span class="dv">-1</span> <span class="kw">shl</span> log_<span class="dv">2</span>[r-l+<span class="dv">1</span>]+<span class="dv">1</span>,log_<span class="dv">2</span>[r-l+<span class="dv">1</span>]]);</a>
-<a class="sourceLine" id="cb3-4" data-line-number="4"><span class="kw">end</span>;</a></code></pre></div>
-<div class="sourceCode" id="cb4"><pre class="sourceCode c++"><code class="sourceCode cpp"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="dt">int</span> query(<span class="dt">int</span> l,<span class="dt">int</span> r);</a>
-<a class="sourceLine" id="cb4-2" data-line-number="2">{</a>
-<a class="sourceLine" id="cb4-3" data-line-number="3">    <span class="cf">return</span> max(f[l,log_2[r-l<span class="dv">+1</span>]],f[r-(<span class="dv">1</span>&lt;&lt;log_2[r-l<span class="dv">+1</span>])<span class="dv">+1</span>,log_2[r-l<span class="dv">+1</span>]]);</a>
-<a class="sourceLine" id="cb4-4" data-line-number="4">}</a></code></pre></div>
-<p>总结一下，其实ST表的代码挺简洁的，也很好学。只要搞懂就行了。</p>
-<blockquote>
-<p>其他：</p>
-<p>有很多人说ST表除了解决RMQ和LCA的时候代码短就没什么用了……</p>
-<p>其实根据ST表的特点，我们可以做到$O(logn)$在表末插入元素<del>不过只要数组下标允许也可以在表首插入</del></p>
-</blockquote>
+<div class="sourceCode" id="cb3"><pre class="sourceCode pascal"><code class="sourceCode pascal"><a class="sourceLine" id="cb3-1" title="1"><span class="kw">function</span> query(l,r:<span class="dt">longint</span>):<span class="dt">longint</span>;</a>
+<a class="sourceLine" id="cb3-2" title="2"> <span class="kw">begin</span></a>
+<a class="sourceLine" id="cb3-3" title="3"> <span class="kw">exit</span>(max(f[l,log2[(r-l+<span class="dv">1</span>)]],f[r<span class="dv">-1</span> <span class="kw">shl</span> log2[(r-l+<span class="dv">1</span>)]+<span class="dv">1</span>,log2[(r-l+<span class="dv">1</span>)]]);</a>
+<a class="sourceLine" id="cb3-4" title="4"> <span class="kw">end</span>;</a></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode c++"><code class="sourceCode cpp"><a class="sourceLine" id="cb4-1" title="1"><span class="dt">int</span> query(<span class="dt">int</span> l,<span class="dt">int</span> r);</a>
+<a class="sourceLine" id="cb4-2" title="2">{</a>
+<a class="sourceLine" id="cb4-3" title="3">    <span class="cf">return</span> max(f[l,log_2[r-l+<span class="dv">1</span>]],f[r-(<span class="dv">1</span>&lt;&lt;log_2[r-l+<span class="dv">1</span>])+<span class="dv">1</span>,log_2[r-l+<span class="dv">1</span>]]);</a>
+<a class="sourceLine" id="cb4-4" title="4">}</a></code></pre></div>
+<p>总结一下，其实ST表的代码挺简洁的，也很好学。只要了解的倍增的思想就行了。</p>
 
                     </section>
                 </div>
@@ -221,18 +209,19 @@
                 </div>
             </div>
 
-            <div id="container"></div>
-            <script src="/js/gitment.js"></script>
+            <div id="gitalk-container"></div>
+            <script src="/js/gitalk.min.js"></script>
             <script>
-            var gitment = new Gitment({
-            owner: 'dblark',
-            repo: 'zhoushengjie.pw',
-            oauth: {
-            client_id: '8fa4b6551a4d0d6a0d68',
-            client_secret: '829f1d6cc0a2247ae3f33a1744337464d26e65a4',
-            },
+            var gitalk = new Gitalk({
+              clientID: '8fa4b6551a4d0d6a0d68',
+              clientSecret: '829f1d6cc0a2247ae3f33a1744337464d26e65a4',
+              repo: 'zhoushengjie.pw',
+              owner: 'dblark',
+              admin: ['dblark'],
+              id: location.pathname,
+              distractionFreeMode: false
             })
-            gitment.render('container')
+            gitalk.render('gitalk-container')
             </script>
 
     </main>

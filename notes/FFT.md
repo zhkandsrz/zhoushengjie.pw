@@ -6,8 +6,6 @@
 
 FFT，就是快速傅里叶转换（Fast Fourier Transition）。这个算法可以把高精度乘法的复杂度$O(n^2)$降到$O(n log n)$。另外，它还有很多的用途。
 
-~~其实FFT在物理的方面明显要多啊，这篇讲FFT的纯粹是为学习NTT准备的~~
-
 但在这之前，让我们先了解一下高精度乘法为何需要FFT的帮助。
 
 ## 多项式乘法
@@ -16,17 +14,17 @@ FFT，就是快速傅里叶转换（Fast Fourier Transition）。这个算法可
 
 比如两个三位数相乘：
 
-$$f(x)=a_1 x^2+a_2 x+a_3$$
+$$f(x)=a_1x^2+a_2x+a_3$$
 
-$$g(x)=b_1 x^2+b_2 x+b_3$$
+$$g(x)=b_1x^2+b_2x+b_3$$
 
 令它们的积为$p(x)$：
 
-$$p(x)=f(x)\times g(x)=a_1 b_1 x^4+(a_1 b_2+a_2+b_1)x^3+(a_1 b_3+b_2 a_2+a_2+b_2)x^2+(a_2+b_3+b_2+a_3)x+a_3+b_3$$
+$$p(x)=f(x)\times g(x)=a_1b_1x^4+(a_1b_2+a_2+b_1)x^3+(a_1b_3+b_2a_2+a_2+b_2)x^2+(a_2+b_3+b_2+a_3)x+a_3+b_3$$
 
 但是，一般来说我们都是用点值表达法而不是系数表达法。比如：
 
-$$f(x)=a_0+a_1 x+a_2 x^2+\cdots +a_n x^n \Leftrightarrow f(x)=\{a_n,a_{n-1},\cdots ,a_1,a_0\}$$
+$$f(x)=a_0+a_1x+a_2x^2+\cdots +a_nx^n \Leftrightarrow f(x)=\{a_n,a_n-1,\cdots ,a_1,a_0\}$$
 
 不过，一般来说我们不可能写出这样的运算结果：$f(x)=\{5,16,2,4\}$，所以，还需要把它整理一下。这是题外话。
 
@@ -40,7 +38,7 @@ $$f(x)=a_0+a_1 x+a_2 x^2+\cdots +a_n x^n \Leftrightarrow f(x)=\{a_n,a_{n-1},\cdo
 
 傅里叶变换的本源是傅里叶级数。就跟幂级数差不多。
 
-幂级数：“我用$x^na_n+x^{n-1}a_{n-1}+\cdots+x^1a_1+x^0+a_0$可以表示世界上所有的函数！”
+幂级数：“我用$x^na_n+x^{n-1}a_{n-1}+\cdots+x^1a_1+x^0a_0$可以表示世界上所有的函数！”
 
 傅里叶级数：“我用$sinx\times1,sinx\times2,sinx\times3\cdots$和$cosx\times1,cosx\times2,cosx\times3\cdots$加上系数也可以表示世界上所有的函数！”
 
@@ -90,7 +88,7 @@ FFT很奇妙，它只要$O(n log n)$就能搞定频域到时域，IFFT的时域�
 
 当然，这么好的东西，也是要付出代价的。
 
-首先，这个函数里的次数必须要是$2^n$，不是的话可以强行用0补上。这是小问题。
+首先，这个函数里的次数必须要是$2^n-1$，不是的话可以强行用0补上。这是小问题。
 
 还有一个限制，$x$也不能任意取。
 
@@ -225,68 +223,68 @@ $$f(w_n^{k+\frac{n}{2}})=f_1(w_n^{2k})-f_2(w_n^{2k})$$
 //Pascal没有关于复数的库，所以自己写了个imaginary库，代码详见我的GitHub
 {$M 100000000,0,0}             //栈容量扩充，不然会炸
 uses
-  math,imaginary;
+math,imaginary;
 type                           //数组定义
-  arr=array[0..8191]of complex;
+arr=array[0..8191]of complex;
 var
-  n1,n2,n3,i:longint;
-  a,b,c:arr;
-  s:array[0..8191]of longint;
-  s1,s2:string;
+n1,n2,n3,i:longint;
+a,b,c:arr;
+s:array[0..8191]of longint;
+s1,s2:string;
 procedure fft(a:arr;var y:arr;n,s:longint);
-var
-  f1,f2,y1,y2:arr;
-  w:complex;
-  x,i:longint;
+ var
+ f1,f2,y1,y2:arr;
+ w:complex;
+ x,i:longint;
+ begin
+ if n=1 then                   //边界条件
+ begin
+ y:=a;
+ exit;
+ end;
+ for i:=0 to n div 2-1 do      //将数组分割成两部分
+ begin
+ f1[i]:=a[i*2];
+ f2[i]:=a[i*2+1];
+ end;
+ fft(f1,y1,n div 2,s);         //递归
+ fft(f2,y2,n div 2,s);
+ for i:=0 to n div 2-1 do
+ begin
+ w:=exp(comp(0,2*pi*i*s/n));   //复根的计算
+ y[i]:=y1[i mod (n div 2)]+w*y2[i mod (n div 2)];//计算出结果
+ y[i+n div 2]:=y1[i mod (n div 2)]-w*y2[i mod (n div 2)];//蝴蝶操作
+ end;
+ end;
 begin
-  if n=1 then                  //边界条件
-  begin
-    y:=a;
-    exit;
-  end;
-  for i:=0 to n div 2-1 do     //将数组分割成两部分
-  begin
-    f1[i]:=a[i*2];
-    f2[i]:=a[i*2+1];
-  end;
-  fft(f1,y1,n div 2,s);        //递归
-  fft(f2,y2,n div 2,s);
-  for i:=0 to n div 2-1 do
-  begin
-    w:=exp(comp(0,2*pi*i*s/n));//复根的计算
-    y[i]:=y1[i mod (n div 2)]+w*y2[i mod (n div 2)];//计算出结果
-    y[i+n div 2]:=y1[i mod (n div 2)]-w*y2[i mod (n div 2)];//蝴蝶操作
-  end;
+readln(s1);                    //输入两个数字，使用字符串
+readln(s2);
+n1:=length(s1);                //两个数分别的长度
+n2:=length(s2);
+for i:=1 to n1 do              //转换
+a[n1-i]:=ord(s1[i])-48;
+for i:=1 to n2 do
+b[n2-i]:=ord(s2[i])-48;
+n3:=n1+n2-1;                   //乘法后长度
+if trunc(math.log2(n3))<math.log2(n3) then//补位
+n3:=2 shl trunc(math.log2(n3));
+fft(a,a,n3,1);                 //FFT
+fft(b,b,n3,1);
+for i:=0 to n3-1 do            //插值
+c[i]:=a[i]*b[i];
+fft(c,c,n3,-1);                //IFFT
+fillchar(s,sizeof(s),0);
+for i:=0 to n3-1 do            //转换成十进制
+begin
+inc(s[i],round(real(c[i])/n3));//这里IFFT后要除以n，注意！
+inc(s[i+1],s[i] div 10);
+s[i]:=s[i] mod 10;
 end;
-begin
-  readln(s1);                  //输入两个数字，使用字符串
-  readln(s2);
-  n1:=length(s1);              //两个数分别的长度
-  n2:=length(s2);
-  for i:=1 to n1 do            //转换
-    a[n1-i]:=ord(s1[i])-48;
-  for i:=1 to n2 do
-    b[n2-i]:=ord(s2[i])-48;
-  n3:=n1+n2-1;                 //乘法后长度
-  if trunc(math.log2(n3))<math.log2(n3) then//补位
-    n3:=2 shl trunc(math.log2(n3));
-  fft(a,a,n3,1);               //FFT
-  fft(b,b,n3,1);
-  for i:=0 to n3-1 do          //插值
-    c[i]:=a[i]*b[i];
-  fft(c,c,n3,-1);              //IFFT
-  fillchar(s,sizeof(s),0);
-  for i:=0 to n3-1 do          //转换成十进制
-  begin
-    inc(s[i],round(real(c[i])/n3));//这里IFFT后要除以n，注意！
-    inc(s[i+1],s[i] div 10);
-    s[i]:=s[i] mod 10;
-  end;
-  while (s[n3]=0) and (n3>0) do//去掉前导0
-    dec(n3);
-  for i:=n3 downto 0 do        //输出
-    write(s[i]);
-  writeln;
+while (s[n3]=0) and (n3>0) do  //去掉前导0
+dec(n3);
+for i:=n3 downto 0 do          //输出
+write(s[i]);
+writeln;
 end.
 ```
 
@@ -300,71 +298,61 @@ const double pi=acos(-1);      //圆周率，不解释
 typedef complex<double> cp;    //复数定义
 void fft(cp a[8192],cp y[8192],int n,int s)
 {
-  if (n==1)                    //边界条件
-  {
-    y[0]=a[0];
-    return;
-  }
-  cp f1[8192],f2[8192];
-  for (int i=0;i<n/2;i++)      //将数组分割成两部分
-  {
-    f1[i]=a[i*2];
-    f2[i]=a[i*2+1];
-  }
-  cp y1[8192],y2[8192];
-  fft(f1,y1,n/2,s);            //递归
-  fft(f2,y2,n/2,s);
-  cp w;
-  for (int i=0;i<n/2;i++)
-  {
-    w=exp(cp(0,2*pi*i*s/n));   //复根的计算
-    y[i]=y1[i%(n/2)]+w*y2[i%(n/2)];//计算出结果
-    y[i+n/2]=y1[i%(n/2)]-w*y2[i%(n/2)];//蝴蝶操作
-  }
+	if (n==1)                  //边界条件
+	{
+		y[0]=a[0];
+		return;
+	}
+	cp f1[8192],f2[8192];
+	for (int i=0;i<n/2;i++)    //将数组分割成两部分
+	{
+		f1[i]=a[i*2];
+		f2[i]=a[i*2+1];
+	}
+	cp y1[8192],y2[8192];
+	fft(f1,y1,n/2,s);          //递归
+	fft(f2,y2,n/2,s);
+	cp w;
+	for (int i=0;i<n/2;i++)
+	{
+		w=exp(cp(0,2*pi*i*s/n));//复根的计算
+		y[i]=y1[i%(n/2)]+w*y2[i%(n/2)];//计算出结果
+		y[i+n/2]=y1[i%(n/2)]-w*y2[i%(n/2)];//蝴蝶操作
+	}
 }
 int main()
 {
-  char s1[8192],s2[8192];
-  scanf("%s\n%s",&s1,&s2);     //输入两个数字，使用字符串
-  int n1,n2,n3;
-  n1=strlen(s1);               //两个数分别的长度
-  n2=strlen(s2);
-  cp a[8192],b[8192];
-  for (int i=0;i<n1;i++)       //转换
-  {
+    char s1[8192],s2[8192];
+    scanf("%s\n%s",&s1,&s2);   //输入两个数字，使用字符串
+    int n1,n2,n3;
+    n1=strlen(s1);             //两个数分别的长度
+    n2=strlen(s2);
+    cp a[8192],b[8192];
+    for (int i=0;i<n1;i++)     //转换
     a[n1-i-1]=s1[i]-'0';
-  }
-  for (int i=0;i<n2;i++)
-  {
+    for (int i=0;i<n2;i++)
     b[n2-i-1]=s2[i]-'0';
-  }
-  n3=n1+n2-1;                  //乘法后长度
-  if ((int)(log2(n3))<log2(n3))//补位
-  {
+    n3=n1+n2-1;                //乘法后长度
+    if ((int)(log2(n3))<log2(n3))//补位
     n3=2<<(int)log2(n3);
-  }
-  fft(a,a,n3,1);               //FFT
-  fft(b,b,n3,1);
-  cp c[8192];
-  for (int i=0;i<n3;i++)       //插值
-  {
+    fft(a,a,n3,1);             //FFT
+    fft(b,b,n3,1);
+    cp c[8192];
+    for (int i=0;i<n3;i++)     //插值
     c[i]=a[i]*b[i];
-  }
-  fft(c,c,n3,-1);              //IFFT
-  int s[8192];
-  for (int i=0;i<n3;i++)       //转换成十进制
-  {
-    s[i]+=(int)(c[i].real()/n3+0.5);//这里IFFT后要除以n，注意！
-    s[i+1]+=s[i]/10;
-    s[i]%=10;
-  }
-  for (;!s[n3]&&n3;n3--);      //去掉前导0
-  for (int i=n3;i>=0;i--)      //输出
-  {
-    printf("%d",s[i]);
-  }
-  putchar('\n');
-  return 0;
+    fft(c,c,n3,-1);            //IFFT
+    int s[8192];
+    for (int i=0;i<n3;i++)     //转换成十进制
+    {
+    	s[i]+=(int)(c[i].real()/n3+0.5);//这里IFFT后要除以n，注意！
+		s[i+1]+=s[i]/10;
+		s[i]%=10;
+	}
+	for (;!s[n3]&&n3;n3--);    //去掉前导0
+	for (int i=n3;i>=0;i--)    //输出
+	printf("%d",s[i]);
+	putchar('\n');
+	return 0;
 }
 ```
 
@@ -406,78 +394,78 @@ $$ a_0\quad a_4\quad a_2\quad a_6\quad a_1\quad a_5\quad a_3\quad a_7$$
 
 ```pascal
 uses
-  math,imaginary;
+math,imaginary;
 type
-  arr=array[0..8191]of complex;
+arr=array[0..8191]of complex;
 var
-  n1,n2,n3,i:longint;
-  a,b,c:arr;
-  rev,s:array[0..8191]of longint;
-  s1,s2:string;
+n1,n2,n3,i:longint;
+a,b,c:arr;
+rev,s:array[0..8191]of longint;
+s1,s2:string;
 procedure getrev(n:longint);   //获取开始的顺序
-var
-  i:longint;
-begin
-  rev[0]:=0;
-  for i:=0 to n-1 do           //递推求解
-   rev[i]:=(rev[i shr 1] shr 1) or ((i and 1) shl (trunc(math.log2(n))-1));
-end;
+ var
+ i:longint;
+ begin
+ rev[0]:=0;
+ for i:=0 to n-1 do            //递推求解
+ rev[i]:=(rev[i shr 1] shr 1) or ((i and 1) shl (trunc(math.log2(n))-1));
+ end;
 procedure fft(var a:arr;n,s:longint);
-var
-  i,j,k:longint;
-  w,t,x,y:complex;
-begin
-  for i:=0 to n-1 do           //数组翻转
-    if i<rev[i] then
-    begin
-      t:=a[i];
-      a[i]:=a[rev[i]];
-      a[rev[i]]:=t;
-    end;
-  for i:=0 to trunc(math.log2(n))-1 do//1 shl i是n的一半
-    for j:=0 to n div (2 shl i)-1 do//第j块
-      for k:=j shl (i+1) to j shl (i+1)+1 shl i-1 do//k相当于递归版中的i
-      begin
-        w:=exp(comp(0,pi/(1 shl i)*k*s));//复根的计算
-        x:=a[k];
-        y:=w*a[k+1 shl i];
-        a[k]:=x+y;             //更新
-        a[k+1 shl i]:=x-y;     //蝴蝶操作
-      end;
-  if s=-1 then                 //IFFT要除以n
-    for i:=0 to n-1 do
-     a[i]:=a[i]/n;
-end;
-begin                          //基本上一样
-  readln(s1);
-  readln(s2);
-  n1:=length(s1);
-  n2:=length(s2);
-  for i:=1 to n1 do
-    a[n1-i]:=ord(s1[i])-48;
-  for i:=1 to n2 do
-    b[n2-i]:=ord(s2[i])-48;
-  n3:=n1+n2-1;
-  if trunc(math.log2(n3))<math.log2(n3) then
-  n3:=2 shl trunc(math.log2(n3));
-  getrev(n3);
-  fft(a,n3,1);
-  fft(b,n3,1);
-  for i:=0 to n3-1 do
-    c[i]:=a[i]*b[i];
-  fft(c,n3,-1);
-  fillchar(s,sizeof(s),0);
-  for i:=0 to n3-1 do
+ var
+ i,j,k:longint;
+ w,t,x,y:complex;
+ begin
+ for i:=0 to n-1 do            //数组翻转
+  if i<rev[i] then
   begin
-    inc(s[i],round(real(c[i])));
-    inc(s[i+1],s[i] div 10);
-    s[i]:=s[i] mod 10;
+  t:=a[i];
+  a[i]:=a[rev[i]];
+  a[rev[i]]:=t;
   end;
-  while (s[n3]=0) and (n3>0) do
-    dec(n3);
-  for i:=n3 downto 0 do
-    write(s[i]);
-  writeln;
+ for i:=0 to trunc(math.log2(n))-1 do//1 shl i是n的一半
+  for j:=0 to n div (2 shl i)-1 do//第j块
+   for k:=j shl (i+1) to j shl (i+1)+1 shl i-1 do//k相当于递归版中的i
+   begin
+   w:=exp(comp(0,pi/(1 shl i)*k*s));//复根的计算
+   x:=a[k];
+   y:=w*a[k+1 shl i];
+   a[k]:=x+y;                  //更新
+   a[k+1 shl i]:=x-y;          //蝴蝶操作
+   end;
+ if s=-1 then                  //IFFT要除以n
+  for i:=0 to n-1 do
+  a[i]:=a[i]/n;
+ end;
+begin                          //基本上一样
+readln(s1);
+readln(s2);
+n1:=length(s1);
+n2:=length(s2);
+for i:=1 to n1 do
+a[n1-i]:=ord(s1[i])-48;
+for i:=1 to n2 do
+b[n2-i]:=ord(s2[i])-48;
+n3:=n1+n2-1;
+if trunc(math.log2(n3))<math.log2(n3) then
+n3:=2 shl trunc(math.log2(n3));
+getrev(n3);
+fft(a,n3,1);
+fft(b,n3,1);
+for i:=0 to n3-1 do
+c[i]:=a[i]*b[i];
+fft(c,n3,-1);
+fillchar(s,sizeof(s),0);
+for i:=0 to n3-1 do
+begin
+inc(s[i],round(real(c[i])));
+inc(s[i+1],s[i] div 10);
+s[i]:=s[i] mod 10;
+end;
+while (s[n3]=0) and (n3>0) do
+dec(n3);
+for i:=n3 downto 0 do
+write(s[i]);
+writeln;
 end.
 ```
 
@@ -492,83 +480,61 @@ typedef complex<double> cp;    //复数定义
 int rev[8192];
 void getrev(int n)
 {
-  for (int i=0;i<n;i++)
-  rev[i]=(rev[i>>1]>>1)|((i&1)<<(int(log2(n))-1));
+	for (int i=0;i<n;i++)
+	rev[i]=(rev[i>>1]>>1)|((i&1)<<(int(log2(n))-1));
 }
 void fft(cp a[8192],int n,int s)
 {
-  for (int i=0;i<n;i++)        //数组翻转
-  {
-    if (i<rev[i])
-	{
-    swap(a[i],a[rev[i]]);
-	}
-  }
-  for (int i=1;i<n;i*=2)       //i是n的一半
-  {
-    for (int j=0;j<n;j+=i*2)   //j是这一块的开始位置
-	{
-      for (int k=j;k<i+j;k++)  //k相当于递归版中的i
-      {
-        cp w=exp(cp(0,pi/i*k*s));//复根的计算
-        cp x=a[k],y=w*a[k+i];
-        a[k]=x+y;              //更新
-        a[k+i]=x-y;            //蝴蝶操作
-      }
-	}
-  }
-  if (s==-1)                   //IFFT要除以n
-  {
-    for (int i=0;i<n;i++)
-	{
-    a[i]/=n;
-	}
-  }
+	for (int i=0;i<n;i++)      //数组翻转
+		if (i<rev[i])
+		swap(a[i],a[rev[i]]);
+	for (int i=1;i<n;i*=2)     //i是n的一半
+		for (int j=0;j<n;j+=i*2)//j是这一块的开始位置
+			for (int k=j;k<i+j;k++)//k相当于递归版中的i
+			{
+				cp w=exp(cp(0,pi/i*k*s));//复根的计算
+				cp x=a[k],y=w*a[k+i];
+				a[k]=x+y;      //更新
+				a[k+i]=x-y;    //蝴蝶操作
+			}
+	if (s==-1)                 //IFFT要除以n
+		for (int i=0;i<n;i++)
+		a[i]/=n;
 }
 int main()                     //基本上一样
 {
-  char s1[8192],s2[8192];
-  scanf("%s\n%s",&s1,&s2);
-  int n1,n2,n3;
-  n1=strlen(s1);
-  n2=strlen(s2);
-  cp a[8192],b[8192];
-  for (int i=0;i<n1;i++)
-  {
+    char s1[8192],s2[8192];
+    scanf("%s\n%s",&s1,&s2);
+    int n1,n2,n3;
+    n1=strlen(s1);
+    n2=strlen(s2);
+    cp a[8192],b[8192];
+    for (int i=0;i<n1;i++)
     a[n1-i-1]=s1[i]-'0';
-  }
-  for (int i=0;i<n2;i++)
-  {
+    for (int i=0;i<n2;i++)
     b[n2-i-1]=s2[i]-'0';
-  }
-  n3=n1+n2-1;
-  if ((int)(log2(n3))<log2(n3))
-  {
+    n3=n1+n2-1;
+    if ((int)(log2(n3))<log2(n3))
     n3=2<<(int)log2(n3);
-  }
-  getrev(n3);
-  fft(a,n3,1);
-  fft(b,n3,1);
-  cp c[8192];
-  for (int i=0;i<n3;i++)
-  {
+    getrev(n3);
+    fft(a,n3,1);
+    fft(b,n3,1);
+    cp c[8192];
+    for (int i=0;i<n3;i++)
     c[i]=a[i]*b[i];
-  }
-  fft(c,n3,-1);
-  int s[8192];
-  for (int i=0;i<n3;i++)
-  {
-    s[i]+=(int)(c[i].real()/n3+0.5);
-    s[i+1]+=s[i]/10;
-    s[i]%=10;
-  }
-  for (;!s[n3]&&n3;n3--);
-  for (int i=n3;i>=0;i--)
-  {
-    printf("%d",s[i]);
-  }
-  putchar('\n');
-  return 0;
+    fft(c,n3,-1);
+    int s[8192];
+    for (int i=0;i<n3;i++)
+    {
+    	s[i]+=(int)(c[i].real()/n3+0.5);
+		s[i+1]+=s[i]/10;
+		s[i]%=10;
+	}
+	for (;!s[n3]&&n3;n3--);
+	for (int i=n3;i>=0;i--)
+	printf("%d",s[i]);
+	putchar('\n');
+	return 0;
 }
 ```
 

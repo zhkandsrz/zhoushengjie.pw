@@ -11,7 +11,7 @@
     <link href="/css/base.min.css" rel="stylesheet">
     <link href="/css/project.min.css" rel="stylesheet">
     <link href="/css/styles.css" rel="stylesheet">
-    <link href="/css/gitment.css" rel="stylesheet">
+    <link href="/css/gitalk.css" rel="stylesheet">
 
 
     <script type="text/x-mathjax-config">
@@ -113,22 +113,22 @@
                     <section class="content-inner margin-top-no">
                         <br>
 
-<h1 id="周圣杰的博客">周圣杰的博客</h1>
+<h1>周圣杰的博客</h1>
 <p>我是dblark，这里是我的博客。<strong>文章在左边。</strong></p>
 <p>主要写自己学习的算法，以及一些基本的东西。</p>
-<p>想学PHP写生成器，也想用JavaScript写回复插件。可惜我太蒻了。</p>
-<p>%%%首页膜拜大佬。</p>
-<p>祝大家国庆假期快乐！</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode pascal"><code class="sourceCode pascal"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">begin</span></a>
-<a class="sourceLine" id="cb1-2" data-line-number="2">writeln(<span class="st">&#39;Happy Chinese National Day!&#39;</span>);</a>
-<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="kw">end</span>.</a></code></pre></div>
-<div class="sourceCode" id="cb2"><pre class="sourceCode c++"><code class="sourceCode cpp"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="pp">#include</span><span class="im">&lt;iostream&gt;</span></a>
-<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="kw">using</span> <span class="kw">namespace</span> std;</a>
-<a class="sourceLine" id="cb2-3" data-line-number="3"><span class="dt">int</span> main()</a>
-<a class="sourceLine" id="cb2-4" data-line-number="4">{</a>
-<a class="sourceLine" id="cb2-5" data-line-number="5">  cout&lt;&lt;<span class="st">&quot;Happy Chinese National Day!&quot;</span>&lt;&lt;endl;</a>
-<a class="sourceLine" id="cb2-6" data-line-number="6">  <span class="cf">return</span> <span class="dv">0</span>;</a>
-<a class="sourceLine" id="cb2-7" data-line-number="7">}</a></code></pre></div>
+<p>从十月颓废到了十二月……希望2019年能有点进步。<del>但几乎不可能的</del></p>
+<p>祝大家新年快乐！</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode pascal"><code class="sourceCode pascal"><a class="sourceLine" id="cb1-1" title="1"><span class="kw">begin</span></a>
+<a class="sourceLine" id="cb1-2" title="2">writeln(<span class="st">&#39;Goodbye 2018&#39;</span>);</a>
+<a class="sourceLine" id="cb1-3" title="3">writeln(<span class="st">&#39;Hello 2019&#39;</span>);</a>
+<a class="sourceLine" id="cb1-4" title="4"><span class="kw">end</span>.</a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode c++"><code class="sourceCode cpp"><a class="sourceLine" id="cb2-1" title="1"><span class="pp">#include</span><span class="im">&lt;iostream&gt;</span></a>
+<a class="sourceLine" id="cb2-2" title="2"><span class="kw">using</span> <span class="kw">namespace</span> std;</a>
+<a class="sourceLine" id="cb2-3" title="3"><span class="dt">int</span> main()</a>
+<a class="sourceLine" id="cb2-4" title="4">{</a>
+<a class="sourceLine" id="cb2-5" title="5">  cout&lt;&lt;<span class="st">&quot;Goodbye 2018&quot;</span>&lt;&lt;endl&lt;&lt;<span class="st">&quot;Hello 2019&quot;</span>&lt;&lt;endl;</a>
+<a class="sourceLine" id="cb2-6" title="6">  <span class="cf">return</span> <span class="dv">0</span>;</a>
+<a class="sourceLine" id="cb2-7" title="7">}</a></code></pre></div>
 
                     </section>
                 </div>
@@ -148,18 +148,19 @@
                 </div>
             </div>
 
-            <div id="container"></div>
-            <script src="/js/gitment.js"></script>
+            <div id="gitalk-container"></div>
+            <script src="/js/gitalk.min.js"></script>
             <script>
-            var gitment = new Gitment({
-            owner: 'dblark',
-            repo: 'zhoushengjie.pw',
-            oauth: {
-            client_id: '8fa4b6551a4d0d6a0d68',
-            client_secret: '829f1d6cc0a2247ae3f33a1744337464d26e65a4',
-            },
+            var gitalk = new Gitalk({
+              clientID: '8fa4b6551a4d0d6a0d68',
+              clientSecret: '829f1d6cc0a2247ae3f33a1744337464d26e65a4',
+              repo: 'zhoushengjie.pw',
+              owner: 'dblark',
+              admin: ['dblark'],
+              id: location.pathname,
+              distractionFreeMode: false
             })
-            gitment.render('container')
+            gitalk.render('gitalk-container')
             </script>
 
     </main>

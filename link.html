@@ -11,7 +11,7 @@
     <link href="/css/base.min.css" rel="stylesheet">
     <link href="/css/project.min.css" rel="stylesheet">
     <link href="/css/styles.css" rel="stylesheet">
-    <link href="/css/gitment.css" rel="stylesheet">
+    <link href="/css/gitalk.css" rel="stylesheet">
 
 
     <script type="text/x-mathjax-config">
@@ -113,12 +113,12 @@
                     <section class="content-inner margin-top-no">
                         <br>
 
-<h1 id="友链">友链</h1>
+<h1>友链</h1>
 <p>排名不分先后。</p>
-<p>Twilight's blog:<a href="http://backroad.top/" class="uri">http://backroad.top/</a></p>
-<p>zwc's blog:<a href="http://zwcsblog.xsazz.cn/" class="uri">http://zwcsblog.xsazz.cn/</a></p>
-<p>yemaster's blog:<a href="http://blog.yemaster.xyz/" class="uri">http://blog.yemaster.xyz/</a></p>
-<p>unsmart's blog:<a href="http://unsmart.pw/" class="uri">http://unsmart.pw/</a></p>
+<p>Twilight's blog:<a href="http://backroad.top/">http://backroad.top/</a></p>
+<p>zwc's blog:<a href="http://zwcblog.top./">http://zwcblog.top./</a></p>
+<p>yemaster's blog:<a href="http://blog.yemaster.xyz/">http://blog.yemaster.xyz/</a></p>
+<p>unsmart's blog:<a href="http://unsmart.pw/">http://unsmart.pw/</a></p>
 <hr />
 <p>Luogu Blog:<a href="http://thedreameryang.blog.luogu.org/">蒟蒻小杨的博客</a></p>
 <p>您可以<a href="/about.html">联系作者</a>来添加友链。</p>
@@ -141,18 +141,19 @@
                 </div>
             </div>
 
-            <div id="container"></div>
-            <script src="/js/gitment.js"></script>
+            <div id="gitalk-container"></div>
+            <script src="/js/gitalk.min.js"></script>
             <script>
-            var gitment = new Gitment({
-            owner: 'dblark',
-            repo: 'zhoushengjie.pw',
-            oauth: {
-            client_id: '8fa4b6551a4d0d6a0d68',
-            client_secret: '829f1d6cc0a2247ae3f33a1744337464d26e65a4',
-            },
+            var gitalk = new Gitalk({
+              clientID: '8fa4b6551a4d0d6a0d68',
+              clientSecret: '829f1d6cc0a2247ae3f33a1744337464d26e65a4',
+              repo: 'zhoushengjie.pw',
+              owner: 'dblark',
+              admin: ['dblark'],
+              id: location.pathname,
+              distractionFreeMode: false
             })
-            gitment.render('container')
+            gitalk.render('gitalk-container')
             </script>
 
     </main>

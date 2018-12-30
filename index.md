@@ -1,18 +1,17 @@
-# 周圣杰的博客
+﻿# 周圣杰的博客
 
 我是dblark，这里是我的博客。**文章在左边。**
 
 主要写自己学习的算法，以及一些基本的东西。
 
-想学PHP写生成器，也想用JavaScript写回复插件。可惜我太蒻了。
+从十月颓废到了十二月……希望2019年能有点进步。~~但几乎不可能的~~
 
-%%%首页膜拜大佬。
-
-祝大家国庆假期快乐！
+祝大家新年快乐！
 
 ```pascal
 begin
-writeln('Happy Chinese National Day!');
+writeln('Goodbye 2018');
+writeln('Hello 2019');
 end.
 ```
 
@@ -21,7 +20,7 @@ end.
 using namespace std;
 int main()
 {
-  cout<<"Happy Chinese National Day!"<<endl;
+  cout<<"Goodbye 2018"<<endl<<"Hello 2019"<<endl;
   return 0;
 }
 ```

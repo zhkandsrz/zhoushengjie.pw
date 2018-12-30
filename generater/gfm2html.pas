@@ -16,7 +16,7 @@ ln+
 '    <link href="/css/base.min.css" rel="stylesheet">'+ln+
 '    <link href="/css/project.min.css" rel="stylesheet">'+ln+
 '    <link href="/css/styles.css" rel="stylesheet">'+ln+
-'    <link href="/css/gitment.css" rel="stylesheet">'+ln+
+'    <link href="/css/gitalk.css" rel="stylesheet">'+ln+
 ln+
 ln+
 '    <script type="text/x-mathjax-config">'+ln+
@@ -107,18 +107,19 @@ ln+
 '                </div>'+ln+
 '            </div>'+ln+
 ln+
-'            <div id="container"></div>'+ln+
-'            <script src="/js/gitment.js"></script>'+ln+
+'            <div id="gitalk-container"></div>'+ln+
+'            <script src="/js/gitalk.min.js"></script>'+ln+
 '            <script>'+ln+
-'            var gitment = new Gitment({'+ln+
-'            owner: ''dblark'','+ln+
-'            repo: ''zhoushengjie.pw'','+ln+
-'            oauth: {'+ln+
-'            client_id: ''8fa4b6551a4d0d6a0d68'','+ln+
-'            client_secret: ''829f1d6cc0a2247ae3f33a1744337464d26e65a4'','+ln+
-'            },'+ln+
+'            var gitalk = new Gitalk({'+ln+
+'              clientID: ''8fa4b6551a4d0d6a0d68'','+ln+
+'              clientSecret: ''829f1d6cc0a2247ae3f33a1744337464d26e65a4'','+ln+
+'              repo: ''zhoushengjie.pw'','+ln+
+'              owner: ''dblark'','+ln+
+'              admin: [''dblark''],'+ln+
+'              id: location.pathname,'+ln+
+'              distractionFreeMode: false'+ln+
 '            })'+ln+
-'            gitment.render(''container'')'+ln+
+'            gitalk.render(''gitalk-container'')'+ln+
 '            </script>'+ln+
 ln+
 '    </main>'+ln+
